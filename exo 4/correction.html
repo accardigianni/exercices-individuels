@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morse</title>
+</head>
+
+<body>
+    <input id="input" />
+    <button id="textToMorse">Text To Morse</button>
+    <button id="morseToText">Morse To Text</button>
+    <div id="result"></div>
+    <script type="text/javascript">
+        (() => {
+            const latinToMorse = {
+                'A': '.-',
+                'B': '-...',
+                'C': '-.-.',
+                'D': '-..',
+                'E': '.',
+                'F': '..-.',
+                'G': '--.',
+                'H': '....',
+                'I': '..',
+                'J': '.---',
+                'K': '-.-',
+                'L': '.-..',
+                'M': '--',
+                'N': '-.',
+                'O': '---',
+                'P': '.--.',
+                'Q': '--.-',
+                'R': '.-.',
+                'S': '...',
+                'T': '-',
+                'U': '..-',
+                'V': '...-',
+                'W': '.--',
+                'X': '-..-',
+                'Y': '-.--',
+                'Z': '--..',
+                ' ': '/'
+            }
+            const morseToLatin = {
+                '-': "T",
+                '--': "M",
+                '---': "O",
+                '--.': "G",
+                '--.-': "Q",
+                '--..': "Z",
+                '-.': "N",
+                '-.-': "K",
+                '-.--': "Y",
+                '-.-.': "C",
+                '-..': "D",
+                '-..-': "X",
+                '-...': "B",
+                '.': "E",
+                '.-': "A",
+                '.--': "W",
+                '.---': "J",
+                '.--.': "P",
+                '.-.': "R",
+                '.-..': "L",
+                '..': "I",
+                '..-': "U",
+                '..-.': "F",
+                '...': "S",
+                '...-': "V",
+                '....': "H",
+                '/': ' '
+            }
+            function getLatinCharacterList(text) {
+                return text.split('');
+            }
+            function getMorseCharacterList(textEnMorse) {
+                return textEnMorse.split(' ');
+            }
+            function translateLatinCharacter(character) {
+                if (latinToMorse.hasOwnProperty(character.toUpperCase())) {
+                    return latinToMorse[character.toUpperCase()];
+                }
+                return '';
+            }
+            function translateMorseCharacter(morsecharacter) {
+                if (morseToLatin.hasOwnProperty(morsecharacter)) {
+                    return morseToLatin[morsecharacter];
+                }
+                return '';
+            }
+            function encode(text) {
+                let encodeString = '';
+                let characterToEncodeArray = getLatinCharacterList(text); // ['h','e']
+                for (let characterToEncode of characterToEncodeArray) {
+                    encodeString += translateLatinCharacter(characterToEncode); // 'A' -> '.-'
+                }
+                return encodeString;
+            }
+            function encodeWithSpace(text) {
+                let encodeString = '';
+                let characterToEncodeArray = getLatinCharacterList(text); // ['h','e']
+                for (let characterToEncode of characterToEncodeArray) {
+                    encodeString += ' ' + translateLatinCharacter(characterToEncode); // 'A' -> '.-'
+                }
+                return encodeString.trim();
+            }
+            function decode(text) {
+                let decodeString = '';
+                const characterToDecodeArray = getMorseCharacterList(text);
+                for (let characterToDecode of characterToDecodeArray) {
+                    decodeString += translateMorseCharacter(characterToDecode); // 'A' -> '.-'
+                }
+                return decodeString;
+            }
+            let morseString = encodeWithSpace('hello world');
+            let latinString = decode(morseString);
+            console.log('MorseToText:', decode(encodeWithSpace('hello world')));
+            console.log('MorseToText:', decode(encodeWithSpace('hello world')));
+            const buttonTextToMorse = document.getElementById('textToMorse');
+            buttonTextToMorse.addEventListener('click', () => {
+                const inputElt = document.getElementById('input');
+                const text = inputElt.value;
+                const morseTraduction = encodeWithSpace(text);
+                const resultElt = document.getElementById('result');
+                resultElt.innerHTML = morseTraduction;
+            })
+            const buttonMorseToText = document.getElementById('morseToText');
+            buttonMorseToText.addEventListener('click', () => {
+                const inputElt = document.getElementById('input');
+                const text = inputElt.value;
+                const latinTraduction = decode(text);
+                const resultElt = document.getElementById('result');
+                resultElt.innerHTML = latinTraduction;
+            })
+        })()
+    </script>
+</body>
+
+</html>
